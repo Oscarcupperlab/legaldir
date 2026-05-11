@@ -12,7 +12,7 @@ export function Footer() {
               <span>LegalDir</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              El directorio profesional de abogados en España. Encuentra, compara y contacta con el mejor abogado para tu caso.
+              El directorio profesional de abogados en Madrid. Encuentra, compara y contacta con el mejor abogado para tu caso.
             </p>
           </div>
           <div>

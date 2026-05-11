@@ -39,7 +39,6 @@ export function Explore() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [specialty, setSpecialty] = useState(searchParams.get("especialidad") ?? "all");
-  const [city, setCity] = useState("all");
   const [price, setPrice] = useState("all");
   const [freeConsultation, setFreeConsultation] = useState(false);
   const [onlineAvailable, setOnlineAvailable] = useState(false);
@@ -48,16 +47,10 @@ export function Explore() {
   const dSearch = useDebounce(search);
   const { data: lawyers = [], isLoading } = useLawyers();
 
-  const cities = useMemo(
-    () => [...new Set(lawyers.map((l) => l.city).filter(Boolean))].sort() as string[],
-    [lawyers]
-  );
-
   const filtered = useMemo(() => {
     const q = dSearch.toLowerCase();
     return lawyers.filter((l) => {
       if (specialty !== "all" && l.specialty !== specialty) return false;
-      if (city !== "all" && l.city !== city) return false;
       if (freeConsultation && !l.free_consultation) return false;
       if (onlineAvailable && !l.online_available) return false;
       if (inPersonAvailable && !l.in_person_available) return false;
@@ -74,7 +67,7 @@ export function Explore() {
   }, [lawyers, dSearch, specialty, city, price, freeConsultation, onlineAvailable, inPersonAvailable]);
 
   const activeFiltersCount = [
-    specialty !== "all", city !== "all", price !== "all",
+    specialty !== "all", price !== "all",
     freeConsultation, onlineAvailable, inPersonAvailable,
   ].filter(Boolean).length;
 
@@ -87,16 +80,6 @@ export function Explore() {
           <SelectContent>
             <SelectItem value="all">Todas las especialidades</SelectItem>
             {specialties.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Ciudad</p>
-        <Select value={city} onValueChange={setCity}>
-          <SelectTrigger><SelectValue placeholder="Todas" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las ciudades</SelectItem>
-            {cities.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
           </SelectContent>
         </Select>
       </div>
@@ -128,7 +111,7 @@ export function Explore() {
   return (
     <div className="container py-8">
       <div className="mb-6">
-        <h1 className="font-display text-3xl font-bold">Directorio de abogados</h1>
+        <h1 className="font-display text-3xl font-bold">Abogados en Madrid</h1>
         <p className="text-muted-foreground mt-1 text-sm">{filtered.length} abogados encontrados</p>
       </div>
 

@@ -54,9 +54,9 @@ export function Home() {
             <DialogTitle>¡Bienvenido a LegalDir!</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
-            <p>LegalDir es el directorio profesional de abogados en España. Aquí puedes:</p>
+            <p>LegalDir es el directorio profesional de abogados en Madrid. Aquí puedes:</p>
             <ul className="space-y-1 list-disc list-inside">
-              <li>Buscar abogados por especialidad, ciudad y precio.</li>
+              <li>Buscar abogados por especialidad y precio.</li>
               <li>Comparar hasta 3 abogados lado a lado.</li>
               <li>Contactar directamente por WhatsApp o agendando una cita.</li>
               <li>Leer guías legales escritas por expertos.</li>
@@ -77,7 +77,7 @@ export function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-4xl md:text-7xl font-bold tracking-tight mb-4"
           >
-            Encuentra al abogado<br className="hidden md:block" /> ideal para ti
+            Encuentra al abogado<br className="hidden md:block" /> ideal en Madrid
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ export function Home() {
             transition={{ delay: 0.1 }}
             className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-8"
           >
-            Compara perfiles, lee valoraciones y contacta directamente. LegalDir te ayuda a decidir.
+            El directorio de abogados de Madrid. Compara perfiles, lee valoraciones y contacta directamente.
           </motion.p>
           <motion.form
             initial={{ opacity: 0, y: 20 }}
@@ -98,7 +98,7 @@ export function Home() {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Busca por especialidad, nombre o ciudad..."
+              placeholder="Busca por especialidad o nombre..."
               className="rounded-full h-14 pl-12 pr-32 text-base shadow-lg border-0 bg-card"
             />
             <Button

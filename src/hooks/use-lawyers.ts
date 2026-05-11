@@ -9,6 +9,7 @@ export function useLawyers() {
       const { data, error } = await supabase
         .from("lawyers")
         .select("*")
+        .eq("city", "Madrid")
         .order("rating", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Lawyer[];
