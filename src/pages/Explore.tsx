@@ -64,7 +64,7 @@ export function Explore() {
       }
       return true;
     });
-  }, [lawyers, dSearch, specialty, city, price, freeConsultation, onlineAvailable, inPersonAvailable]);
+  }, [lawyers, dSearch, specialty, price, freeConsultation, onlineAvailable, inPersonAvailable]);
 
   const activeFiltersCount = [
     specialty !== "all", price !== "all",
