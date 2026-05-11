@@ -247,20 +247,26 @@ export function LawyerPage() {
         <h2 className="font-display text-xl font-bold mb-4">Contacto</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { icon: Phone, label: "Teléfono", value: lawyer.phone },
-            { icon: Mail, label: "Email", value: lawyer.email },
-            { icon: Globe, label: "Web", value: lawyer.website },
-            { icon: Clock, label: "Horario", value: lawyer.schedule },
+            { icon: Phone, label: "Teléfono", value: lawyer.phone, href: lawyer.phone ? `tel:${lawyer.phone}` : null },
+            { icon: Mail, label: "Email", value: lawyer.email, href: lawyer.email ? `mailto:${lawyer.email}` : null },
+            { icon: Globe, label: "Web", value: lawyer.website, href: lawyer.website },
+            { icon: Clock, label: "Horario", value: lawyer.schedule, href: null },
           ]
             .filter((i) => i.value)
-            .map(({ icon: Icon, label, value }) => (
+            .map(({ icon: Icon, label, value, href }) => (
               <div
                 key={label}
                 className="rounded-xl border bg-card p-4 hover:shadow-md transition-shadow"
               >
                 <Icon className="h-4 w-4 text-primary mb-2" />
                 <p className="text-[10px] text-muted-foreground uppercase font-semibold mb-0.5">{label}</p>
-                <p className="text-xs font-medium break-all">{value}</p>
+                {href ? (
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="text-xs font-medium break-all text-primary hover:underline">
+                    {value}
+                  </a>
+                ) : (
+                  <p className="text-xs font-medium break-all">{value}</p>
+                )}
               </div>
             ))}
         </div>
