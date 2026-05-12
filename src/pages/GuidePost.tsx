@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import type { BlogSection } from "@/data/blog-posts";
+import { SEO } from "@/components/SEO";
 
 function Section({ s }: { s: BlogSection }) {
   switch (s.type) {
@@ -55,6 +56,12 @@ export function GuidePost() {
   }
 
   return (
+    <>
+    <SEO
+      title={post.title}
+      description={post.excerpt}
+      canonical={`/guias/${post.slug}`}
+    />
     <div className="container py-8 max-w-3xl mx-auto">
       <Link
         to="/guias"
@@ -119,5 +126,6 @@ export function GuidePost() {
         </section>
       )}
     </div>
+    </>
   );
 }

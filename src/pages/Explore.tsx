@@ -22,6 +22,7 @@ import {
 import { LawyerCard } from "@/components/explore/LawyerCard";
 import { useLawyers, useDebounce } from "@/hooks/use-lawyers";
 import { safeArray } from "@/types/lawyer";
+import { SEO } from "@/components/SEO";
 
 const specialties = [
   "Penal", "Civil", "Laboral", "Familia", "Fiscal",
@@ -109,6 +110,12 @@ export function Explore() {
   );
 
   return (
+    <>
+    <SEO
+      title="Abogados en Madrid"
+      description="Directorio completo de abogados en Madrid. Filtra por especialidad, precio y disponibilidad. Encuentra al abogado ideal para tu caso en segundos."
+      canonical="/directorio"
+    />
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="font-display text-3xl font-bold">Abogados en Madrid</h1>
@@ -175,5 +182,6 @@ export function Explore() {
         </DrawerContent>
       </Drawer>
     </div>
+    </>
   );
 }

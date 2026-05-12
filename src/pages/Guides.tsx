@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { blogPosts, blogCategories } from "@/data/blog-posts";
 import { cn } from "@/lib/utils";
+import { SEO } from "@/components/SEO";
 
 export function Guides() {
   const [query, setQuery] = useState("");
@@ -19,6 +20,11 @@ export function Guides() {
 
   return (
     <>
+      <SEO
+        title="Guías Legales en Madrid"
+        description="Guías prácticas de derecho en español. Aprende sobre tus derechos laborales, cómo hacer un divorcio, herencias, contratos y más. Escritas por abogados en Madrid."
+        canonical="/guias"
+      />
       {/* Hero */}
       <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1400&q=60')] bg-cover bg-center" />

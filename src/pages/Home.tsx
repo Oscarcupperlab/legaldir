@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { SEO } from "@/components/SEO";
 
 const specialties = [
   "Penal", "Civil", "Laboral", "Familia", "Fiscal",
@@ -47,6 +48,11 @@ export function Home() {
 
   return (
     <>
+      <SEO
+        title="Directorio de Abogados en Madrid"
+        description="Encuentra y compara los mejores abogados en Madrid. Perfiles verificados, valoraciones reales y contacto directo con especialistas en derecho penal, civil, laboral, familia y más."
+        canonical="/"
+      />
       {/* Onboarding modal */}
       <Dialog open={!onboarded} onOpenChange={(o) => !o && handleOnboard()}>
         <DialogContent>

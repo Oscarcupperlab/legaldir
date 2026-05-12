@@ -15,6 +15,7 @@ import { useLawyer, useSuccessCases } from "@/hooks/use-lawyers";
 import { useComparisonStore } from "@/stores/comparison";
 import { safeArray } from "@/types/lawyer";
 import { cn } from "@/lib/utils";
+import { SEO } from "@/components/SEO";
 
 const tagColors: Record<string, string> = {
   "Respuesta rápida": "bg-blue-100 text-blue-700",
@@ -70,6 +71,13 @@ export function LawyerPage() {
   };
 
   return (
+    <>
+    <SEO
+      title={`${lawyer.name} — Abogado en Madrid`}
+      description={lawyer.description ?? `Perfil de ${lawyer.name}, abogado especialista en ${lawyer.specialty ?? "derecho"} en Madrid. Valoraciones, experiencia y contacto directo.`}
+      canonical={`/abogado/${lawyer.slug}`}
+      image={lawyer.image_url ?? undefined}
+    />
     <div className="container py-8">
       <Link
         to="/directorio"
@@ -287,5 +295,6 @@ export function LawyerPage() {
       {/* Reviews */}
       <Reviews lawyerId={lawyer.id} lawyerName={lawyer.name} />
     </div>
+    </>
   );
 }
