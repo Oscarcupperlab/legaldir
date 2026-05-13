@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+"use client";
+import Link from "next/link";
 import { Scale } from "lucide-react";
 import { useComparisonStore } from "@/stores/comparison";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ export function Compare() {
           Añade abogados desde el directorio usando el botón de comparar.
         </p>
         <Button asChild>
-          <Link to="/directorio">Ir al directorio</Link>
+          <Link href="/directorio">Ir al directorio</Link>
         </Button>
       </div>
     );
@@ -64,7 +65,7 @@ export function Compare() {
                     </div>
                     <div className="flex gap-1 flex-wrap justify-center">
                       <Button size="sm" variant="ghost" asChild className="text-xs h-7">
-                        <Link to={`/abogado/${l.slug}`}>Ver perfil</Link>
+                        <Link href={`/abogado/${l.slug}`}>Ver perfil</Link>
                       </Button>
                       <Button size="sm" variant="ghost" className="text-xs h-7" onClick={() => removeItem(l.id)}>
                         Quitar

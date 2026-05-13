@@ -1,4 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Home, Search, Users, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +12,7 @@ const items = [
 ];
 
 export function MobileNav() {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card border-t">
@@ -18,7 +20,7 @@ export function MobileNav() {
         {items.map(({ to, label, icon: Icon }) => (
           <Link
             key={to}
-            to={to}
+            href={to}
             className={cn(
               "flex flex-col items-center gap-1 py-2 text-[10px] font-medium transition-colors",
               pathname === to ? "text-primary" : "text-muted-foreground"

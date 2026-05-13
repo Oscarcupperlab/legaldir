@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+import { useRouter } from "next/navigation";
 import { Scale, X } from "lucide-react";
 import { useComparisonStore } from "@/stores/comparison";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function ComparisonTray() {
   const { items, removeItem, clearAll } = useComparisonStore();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   if (items.length === 0) return null;
 
@@ -35,7 +36,7 @@ export function ComparisonTray() {
         ))}
       </div>
       <div className="flex items-center gap-2 ml-1">
-        <Button size="sm" onClick={() => navigate("/comparar")}>
+        <Button size="sm" onClick={() => router.push("/comparar")}>
           Comparar
         </Button>
         <Button size="sm" variant="ghost" onClick={clearAll}>

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { useReviews, useAddReview } from "@/hooks/use-lawyers";

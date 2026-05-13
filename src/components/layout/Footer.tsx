@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Gavel } from "lucide-react";
 
 export function Footer() {
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <Link to="/" className="flex items-center gap-2 text-primary font-bold mb-3">
+            <Link href="/" className="flex items-center gap-2 text-primary font-bold mb-3">
               <Gavel className="h-5 w-5" />
               <span>LegalDir</span>
             </Link>
@@ -25,7 +25,7 @@ export function Footer() {
                 { to: "/comparar", label: "Comparar abogados" },
               ].map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href={l.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {l.label}
                   </Link>
                 </li>

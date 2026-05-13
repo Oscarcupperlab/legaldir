@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+"use client";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, MapPin, Star, ShieldCheck, Briefcase,
@@ -7,15 +8,13 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { WhatsAppButton } from "@/components/explore/WhatsAppButton";
 import { AppointmentModal } from "@/components/explore/AppointmentModal";
 import { Reviews } from "@/components/explore/Reviews";
-import { useLawyer, useSuccessCases } from "@/hooks/use-lawyers";
 import { useComparisonStore } from "@/stores/comparison";
+import type { Lawyer, SuccessCase } from "@/types/lawyer";
 import { safeArray } from "@/types/lawyer";
 import { cn } from "@/lib/utils";
-import { SEO } from "@/components/SEO";
 
 const tagColors: Record<string, string> = {
   "Respuesta rápida": "bg-blue-100 text-blue-700",
@@ -27,37 +26,13 @@ const tagColors: Record<string, string> = {
   "Consulta gratuita": "bg-emerald-100 text-emerald-700",
 };
 
-export function LawyerPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const { data: lawyer, isLoading } = useLawyer(slug ?? "");
-  const { data: cases = [] } = useSuccessCases(lawyer?.id);
+interface Props {
+  lawyer: Lawyer;
+  cases: SuccessCase[];
+}
+
+export function LawyerPageClient({ lawyer, cases }: Props) {
   const { addItem, removeItem, isInTray, items } = useComparisonStore();
-
-  if (isLoading) {
-    return (
-      <div className="container py-8 space-y-4">
-        <Skeleton className="h-8 w-32" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Skeleton className="aspect-[4/3] rounded-2xl" />
-          <div className="space-y-3">
-            {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-6" />)}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!lawyer) {
-    return (
-      <div className="container py-16 text-center">
-        <p className="text-muted-foreground">Abogado no encontrado.</p>
-        <Link to="/directorio" className="text-primary hover:underline text-sm mt-2 block">
-          Volver al directorio
-        </Link>
-      </div>
-    );
-  }
-
   const inTray = isInTray(lawyer.id);
   const maxReached = items.length >= 3;
   const tags = safeArray<string>(lawyer.tags);
@@ -71,16 +46,9 @@ export function LawyerPage() {
   };
 
   return (
-    <>
-    <SEO
-      title={`${lawyer.name} — Abogado en Madrid`}
-      description={lawyer.description ?? `Perfil de ${lawyer.name}, abogado especialista en ${lawyer.specialty ?? "derecho"} en Madrid. Valoraciones, experiencia y contacto directo.`}
-      canonical={`/abogado/${lawyer.slug}`}
-      image={lawyer.image_url ?? undefined}
-    />
     <div className="container py-8">
       <Link
-        to="/directorio"
+        href="/directorio"
         className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-6 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" /> Volver
@@ -295,6 +263,5 @@ export function LawyerPage() {
       {/* Reviews */}
       <Reviews lawyerId={lawyer.id} lawyerName={lawyer.name} />
     </div>
-    </>
   );
 }

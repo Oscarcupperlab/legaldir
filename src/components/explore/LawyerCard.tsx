@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+"use client";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, Star, ShieldCheck, BadgeCheck, Video, Scale, Eye } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -123,7 +124,7 @@ export function LawyerCard({ lawyer, index = 0 }: LawyerCardProps) {
             <Scale className="h-4 w-4" />
           </Button>
           <Button size="sm" variant="ghost" className="h-8 w-8 rounded-lg bg-muted p-0" asChild>
-            <Link to={`/abogado/${lawyer.slug}`}>
+            <Link href={`/abogado/${lawyer.slug}`}>
               <Eye className="h-4 w-4" />
             </Link>
           </Button>

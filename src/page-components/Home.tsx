@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, TrendingUp, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -14,24 +16,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { SEO } from "@/components/SEO";
 
 const specialties = [
   "Penal", "Civil", "Laboral", "Familia", "Fiscal",
   "Inmobiliario", "Mercantil", "Propiedad Intelectual",
 ];
 
-export function Home() {
-  const navigate = useNavigate();
+export function HomeClient() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
-  const [onboarded, setOnboarded] = useState(true);
+  const [onboarded, setOnboarded] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    return !!localStorage.getItem("legaldir-onboarded");
+  });
   const { data: lawyers = [], isLoading } = useLawyers();
-
-  useEffect(() => {
-    if (!localStorage.getItem("legaldir-onboarded")) {
-      setOnboarded(false);
-    }
-  }, []);
 
   const handleOnboard = () => {
     localStorage.setItem("legaldir-onboarded", "true");
@@ -40,7 +38,7 @@ export function Home() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate(`/directorio${query ? `?q=${encodeURIComponent(query)}` : ""}`);
+    router.push(`/directorio${query ? `?q=${encodeURIComponent(query)}` : ""}`);
   };
 
   const topLawyers = lawyers.slice(0, 6);
@@ -48,13 +46,8 @@ export function Home() {
 
   return (
     <>
-      <SEO
-        title="Directorio de Abogados en Madrid"
-        description="Encuentra y compara los mejores abogados en Madrid. Perfiles verificados, valoraciones reales y contacto directo con especialistas en derecho penal, civil, laboral, familia y más."
-        canonical="/"
-      />
       {/* Onboarding modal */}
-      <Dialog open={!onboarded} onOpenChange={(o) => !o && handleOnboard()}>
+      <Dialog open={onboarded === false} onOpenChange={(o) => { if (!o) handleOnboard(); }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>¡Bienvenido a LegalDir!</DialogTitle>
@@ -137,7 +130,7 @@ export function Home() {
               transition={{ delay: i * 0.04 }}
             >
               <Link
-                to={`/directorio?especialidad=${encodeURIComponent(s)}`}
+                href={`/directorio?especialidad=${encodeURIComponent(s)}`}
                 className="rounded-full border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:shadow-md transition-all"
               >
                 {s}
@@ -177,7 +170,7 @@ export function Home() {
             <BookOpen className="h-5 w-5 text-primary" />
             <h2 className="font-display text-2xl font-bold">Desde el blog</h2>
           </div>
-          <Link to="/guias" className="text-sm text-primary hover:underline">
+          <Link href="/guias" className="text-sm text-primary hover:underline">
             Ver todas →
           </Link>
         </div>
@@ -191,7 +184,7 @@ export function Home() {
               transition={{ delay: i * 0.08 }}
             >
               <Link
-                to={`/guias/${post.slug}`}
+                href={`/guias/${post.slug}`}
                 className="group block rounded-xl border bg-card overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all"
               >
                 <div className="aspect-[16/10] overflow-hidden">

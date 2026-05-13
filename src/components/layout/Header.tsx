@@ -1,4 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Gavel, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,12 +12,12 @@ const navLinks = [
 ];
 
 export function Header() {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card/80 backdrop-blur-md">
       <div className="container flex h-14 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-bold text-primary">
+        <Link href="/" className="flex items-center gap-2 font-bold text-primary">
           <Gavel className="h-5 w-5" />
           <span className="text-lg font-bold">LegalDir</span>
         </Link>
@@ -25,7 +27,7 @@ export function Header() {
           {navLinks.map((link) => (
             <Link
               key={link.to}
-              to={link.to}
+              href={link.to}
               className={cn(
                 "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                 pathname === link.to
@@ -39,7 +41,7 @@ export function Header() {
         </nav>
 
         {/* Mobile search icon */}
-        <Link to="/directorio" className="md:hidden p-2 rounded-md hover:bg-accent">
+        <Link href="/directorio" className="md:hidden p-2 rounded-md hover:bg-accent">
           <Search className="h-5 w-5" />
         </Link>
       </div>

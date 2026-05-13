@@ -1,9 +1,9 @@
-import { useParams, Link } from "react-router-dom";
+"use client";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import type { BlogSection } from "@/data/blog-posts";
-import { SEO } from "@/components/SEO";
 
 function Section({ s }: { s: BlogSection }) {
   switch (s.type) {
@@ -26,7 +26,7 @@ function Section({ s }: { s: BlogSection }) {
       );
     case "quote":
       return (
-        <blockquote className="border-l-4 border-primary pl-4 py-2 bg-accent/30 rounded-r-lg italic text-muted-foreground text-sm">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground my-4">
           {s.text}
         </blockquote>
       );
@@ -39,16 +39,15 @@ function Section({ s }: { s: BlogSection }) {
   }
 }
 
-export function GuidePost() {
-  const { slug } = useParams<{ slug: string }>();
-  const post = getPostBySlug(slug ?? "");
-  const related = getRelatedPosts(slug ?? "");
+export function GuidePost({ slug }: { slug: string }) {
+  const post = getPostBySlug(slug);
+  const related = getRelatedPosts(slug);
 
   if (!post) {
     return (
       <div className="container py-20 text-center">
         <p className="text-muted-foreground">Artículo no encontrado.</p>
-        <Link to="/guias" className="text-primary hover:underline text-sm mt-2 block">
+        <Link href="/guias" className="text-primary hover:underline text-sm mt-2 block">
           Ver todas las guías
         </Link>
       </div>
@@ -56,15 +55,9 @@ export function GuidePost() {
   }
 
   return (
-    <>
-    <SEO
-      title={post.title}
-      description={post.excerpt}
-      canonical={`/guias/${post.slug}`}
-    />
     <div className="container py-8 max-w-3xl mx-auto">
       <Link
-        to="/guias"
+        href="/guias"
         className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-6 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" /> Guías
@@ -74,50 +67,53 @@ export function GuidePost() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <span className="inline-block bg-accent text-accent-foreground text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full mb-3">
-          {post.category}
-        </span>
-        <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">{post.title}</h1>
-        <div className="flex items-center gap-3 text-sm text-muted-foreground mb-6">
-          <span>{post.author}</span>
+        <div className="aspect-[16/8] rounded-2xl overflow-hidden mb-8">
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+          <span className="text-primary font-semibold uppercase tracking-wide">{post.category}</span>
           <span>·</span>
           <span>{post.date}</span>
           <span>·</span>
           <span>{post.readTime}</span>
         </div>
 
-        <div className="aspect-[16/7] rounded-2xl overflow-hidden mb-8">
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-        </div>
+        <h1 className="font-display text-3xl font-bold mb-4">{post.title}</h1>
+        <p className="text-muted-foreground mb-8">{post.excerpt}</p>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {post.content.map((s, i) => (
             <Section key={i} s={s} />
           ))}
         </div>
+
+        <div className="border-t mt-10 pt-6 text-sm text-muted-foreground">
+          Escrito por <strong className="text-foreground">{post.author}</strong>
+        </div>
       </motion.article>
 
-      {/* Related */}
       {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="font-display text-xl font-bold mb-5">Artículos relacionados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="mt-12">
+          <h2 className="font-display text-xl font-bold mb-4">Artículos relacionados</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {related.map((p) => (
               <Link
                 key={p.slug}
-                to={`/guias/${p.slug}`}
-                className="group block rounded-xl border bg-card overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all"
+                href={`/guias/${p.slug}`}
+                className="flex gap-3 rounded-xl border bg-card p-3 hover:bg-accent transition-colors"
               >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-3">
-                  <span className="text-[10px] font-semibold text-primary uppercase">{p.category}</span>
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="h-16 w-24 rounded-lg object-cover shrink-0"
+                />
+                <div>
+                  <span className="text-[10px] font-semibold uppercase text-primary">{p.category}</span>
                   <h3 className="font-semibold text-xs mt-1 line-clamp-2">{p.title}</h3>
                 </div>
               </Link>
@@ -126,6 +122,5 @@ export function GuidePost() {
         </section>
       )}
     </div>
-    </>
   );
 }

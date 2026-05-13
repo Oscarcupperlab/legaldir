@@ -1,5 +1,6 @@
+"use client";
 import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,7 +23,6 @@ import {
 import { LawyerCard } from "@/components/explore/LawyerCard";
 import { useLawyers, useDebounce } from "@/hooks/use-lawyers";
 import { safeArray } from "@/types/lawyer";
-import { SEO } from "@/components/SEO";
 
 const specialties = [
   "Penal", "Civil", "Laboral", "Familia", "Fiscal",
@@ -36,43 +36,16 @@ const priceOptions = [
   { value: "alto", label: "Más de €150/h" },
 ];
 
-export function Explore() {
-  const [searchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("q") ?? "");
-  const [specialty, setSpecialty] = useState(searchParams.get("especialidad") ?? "all");
-  const [price, setPrice] = useState("all");
-  const [freeConsultation, setFreeConsultation] = useState(false);
-  const [onlineAvailable, setOnlineAvailable] = useState(false);
-  const [inPersonAvailable, setInPersonAvailable] = useState(false);
+interface FilterControlsProps {
+  specialty: string; setSpecialty: (v: string) => void;
+  price: string; setPrice: (v: string) => void;
+  freeConsultation: boolean; setFreeConsultation: (v: boolean) => void;
+  onlineAvailable: boolean; setOnlineAvailable: (v: boolean) => void;
+  inPersonAvailable: boolean; setInPersonAvailable: (v: boolean) => void;
+}
 
-  const dSearch = useDebounce(search);
-  const { data: lawyers = [], isLoading } = useLawyers();
-
-  const filtered = useMemo(() => {
-    const q = dSearch.toLowerCase();
-    return lawyers.filter((l) => {
-      if (specialty !== "all" && l.specialty !== specialty) return false;
-      if (freeConsultation && !l.free_consultation) return false;
-      if (onlineAvailable && !l.online_available) return false;
-      if (inPersonAvailable && !l.in_person_available) return false;
-      if (price !== "all") {
-        const pr = l.price_range ?? "";
-        if (price === "bajo" && !pr.includes("80") && !pr.includes("60") && !pr.includes("70") && !pr.includes("50")) return false;
-      }
-      if (q) {
-        const fields = [l.name, l.specialty, l.city, l.description, ...safeArray<string>(l.tags)].join(" ").toLowerCase();
-        if (!fields.includes(q)) return false;
-      }
-      return true;
-    });
-  }, [lawyers, dSearch, specialty, price, freeConsultation, onlineAvailable, inPersonAvailable]);
-
-  const activeFiltersCount = [
-    specialty !== "all", price !== "all",
-    freeConsultation, onlineAvailable, inPersonAvailable,
-  ].filter(Boolean).length;
-
-  const FilterControls = () => (
+function FilterControls({ specialty, setSpecialty, price, setPrice, freeConsultation, setFreeConsultation, onlineAvailable, setOnlineAvailable, inPersonAvailable, setInPersonAvailable }: FilterControlsProps) {
+  return (
     <div className="space-y-4">
       <div>
         <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Especialidad</p>
@@ -108,14 +81,49 @@ export function Explore() {
       </div>
     </div>
   );
+}
+
+export function Explore() {
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
+  const [specialty, setSpecialty] = useState(searchParams.get("especialidad") ?? "all");
+  const [price, setPrice] = useState("all");
+  const [freeConsultation, setFreeConsultation] = useState(false);
+  const [onlineAvailable, setOnlineAvailable] = useState(false);
+  const [inPersonAvailable, setInPersonAvailable] = useState(false);
+
+  const dSearch = useDebounce(search);
+  const { data: lawyers = [], isLoading } = useLawyers();
+
+  const filtered = useMemo(() => {
+    const q = dSearch.toLowerCase();
+    return lawyers.filter((l) => {
+      if (specialty !== "all" && l.specialty !== specialty) return false;
+      if (freeConsultation && !l.free_consultation) return false;
+      if (onlineAvailable && !l.online_available) return false;
+      if (inPersonAvailable && !l.in_person_available) return false;
+      if (price !== "all") {
+        const pr = l.price_range ?? "";
+        if (price === "bajo" && !pr.includes("80") && !pr.includes("60") && !pr.includes("70") && !pr.includes("50")) return false;
+      }
+      if (q) {
+        const fields = [l.name, l.specialty, l.city, l.description, ...safeArray<string>(l.tags)].join(" ").toLowerCase();
+        if (!fields.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [lawyers, dSearch, specialty, price, freeConsultation, onlineAvailable, inPersonAvailable]);
+
+  const activeFiltersCount = [
+    specialty !== "all", price !== "all",
+    freeConsultation, onlineAvailable, inPersonAvailable,
+  ].filter(Boolean).length;
+
+  const filterProps = { specialty, setSpecialty, price, setPrice, freeConsultation, setFreeConsultation, onlineAvailable, setOnlineAvailable, inPersonAvailable, setInPersonAvailable };
 
   return (
     <>
-    <SEO
-      title="Abogados en Madrid"
-      description="Directorio completo de abogados en Madrid. Filtra por especialidad, precio y disponibilidad. Encuentra al abogado ideal para tu caso en segundos."
-      canonical="/directorio"
-    />
+
     <div className="container py-8">
       <div className="mb-6">
         <h1 className="font-display text-3xl font-bold">Abogados en Madrid</h1>
@@ -136,7 +144,7 @@ export function Explore() {
       <div className="flex gap-6">
         {/* Sidebar desktop */}
         <aside className="hidden md:block w-64 shrink-0 sticky top-20 self-start rounded-xl border bg-card p-5 space-y-4">
-          <FilterControls />
+          <FilterControls {...filterProps} />
         </aside>
 
         {/* Grid */}
@@ -177,7 +185,7 @@ export function Explore() {
             <DrawerTitle>Filtrar abogados</DrawerTitle>
           </DrawerHeader>
           <div className="p-4 pb-8">
-            <FilterControls />
+            <FilterControls {...filterProps} />
           </div>
         </DrawerContent>
       </Drawer>
