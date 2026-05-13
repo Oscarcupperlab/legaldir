@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Gavel, Users, PlusCircle, LogOut } from "lucide-react";
+import { Gavel, Users, PlusCircle, LogOut, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -71,6 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {[
             { href: "/admin", label: "Abogados", icon: Users },
             { href: "/admin/nuevo", label: "Añadir abogado", icon: PlusCircle },
+            { href: "/admin/importar", label: "Importar CSV/Excel", icon: Upload },
           ].map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
