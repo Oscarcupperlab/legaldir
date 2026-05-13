@@ -6,7 +6,7 @@ import { Gavel, Users, PlusCircle, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const ADMIN_PASSWORD = "legaldir2026";
+const ADMIN_PASSWORD = "kegjeb-7cithu-Zexkar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [authed, setAuthed] = useState<boolean>(() => {
