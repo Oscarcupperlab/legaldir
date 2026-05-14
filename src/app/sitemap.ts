@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { blogPosts } from "@/data/blog-posts";
+import { allEspecialidadSlugs } from "@/lib/especialidades";
 
 const BASE_URL = "https://legaldir.vercel.app";
 
@@ -28,9 +29,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const especialidadRoutes: MetadataRoute.Sitemap = allEspecialidadSlugs.map((slug) => ({
+    url: `${BASE_URL}/${slug}`,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
   return [
     { url: BASE_URL, changeFrequency: "daily", priority: 1.0 },
     { url: `${BASE_URL}/directorio`, changeFrequency: "daily", priority: 0.9 },
+    ...especialidadRoutes,
     { url: `${BASE_URL}/guias`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/comparar`, changeFrequency: "monthly", priority: 0.5 },
     ...lawyerRoutes,
