@@ -205,7 +205,10 @@ export default function ImportarPage() {
 
     for (let i = 0; i < toInsert.length; i += CHUNK) {
       const chunk = toInsert.slice(i, i + CHUNK);
-      const { error } = await supabase.from("lawyers").insert(chunk);
+      const { error } = await supabase.from("lawyers").upsert(chunk, {
+        onConflict: "slug",
+        ignoreDuplicates: false,
+      });
 
       chunk.forEach((item) => {
         const idx = updated.findIndex((r) => r.data.slug === item.slug && r.status === "pending");
