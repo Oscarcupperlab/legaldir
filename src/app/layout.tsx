@@ -6,7 +6,7 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { ComparisonTray } from "@/components/layout/ComparisonTray";
 import "./globals.css";
 
-const BASE_URL = "https://legaldir.vercel.app";
+const BASE_URL = "https://legaldir.es";
 const SITE_NAME = "LegalDir Madrid";
 
 export const metadata: Metadata = {

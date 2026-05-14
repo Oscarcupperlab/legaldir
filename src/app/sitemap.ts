@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { blogPosts } from "@/data/blog-posts";
 import { allEspecialidadSlugs } from "@/lib/especialidades";
 
-const BASE_URL = "https://legaldir.vercel.app";
+const BASE_URL = "https://legaldir.es";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createClient(

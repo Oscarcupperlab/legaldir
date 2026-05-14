@@ -32,7 +32,7 @@ export async function generateMetadata({
     openGraph: {
       title: config.title,
       description: config.description,
-      url: `https://legaldir.vercel.app/${especialidad}`,
+      url: `https://legaldir.es/${especialidad}`,
       siteName: "LegalDir",
       locale: "es_ES",
       type: "website",
@@ -65,7 +65,7 @@ export default async function EspecialidadPage({
     "@type": "ItemList",
     name: config.h1,
     description: config.description,
-    url: `https://legaldir.vercel.app/${especialidad}`,
+    url: `https://legaldir.es/${especialidad}`,
     numberOfItems: lawyerList.length,
     itemListElement: lawyerList.slice(0, 10).map((l, i) => ({
       "@type": "ListItem",
@@ -73,7 +73,7 @@ export default async function EspecialidadPage({
       item: {
         "@type": "LegalService",
         name: l.name,
-        url: `https://legaldir.vercel.app/abogado/${l.slug}`,
+        url: `https://legaldir.es/abogado/${l.slug}`,
         address: {
           "@type": "PostalAddress",
           addressLocality: "Madrid",
