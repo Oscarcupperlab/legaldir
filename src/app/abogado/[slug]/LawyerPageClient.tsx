@@ -65,10 +65,17 @@ export function LawyerPageClient({ lawyer, cases }: Props) {
             <img
               src={lawyer.image_url}
               alt={lawyer.name}
-              className="w-full h-full object-contain p-6 bg-white"
+              className="w-full h-full object-contain p-6"
+              onError={(e) => {
+                const el = e.currentTarget;
+                el.style.display = "none";
+                el.parentElement!.innerHTML = `<span class="text-4xl font-bold text-primary/30">${lawyer.name.split(" ").slice(0,2).map((w: string) => w[0]).join("")}</span>`;
+              }}
             />
           ) : (
-            <p className="text-muted-foreground text-sm">Sin foto</p>
+            <span className="text-4xl font-bold text-primary/30">
+              {lawyer.name.split(" ").slice(0,2).map((w) => w[0]).join("")}
+            </span>
           )}
         </div>
 

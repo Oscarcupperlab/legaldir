@@ -46,9 +46,13 @@ export function LawyerCard({ lawyer, index = 0 }: LawyerCardProps) {
       transition={{ delay: index * 0.05 }}
       className="flex items-start gap-4 rounded-xl border bg-card p-4 hover:shadow-lg transition-shadow"
     >
-      <Avatar className="h-16 w-16 shrink-0 border-2 border-muted bg-white">
-        <AvatarImage src={lawyer.image_url ?? undefined} className="object-contain p-1" />
-        <AvatarFallback className="text-sm font-semibold">{initials}</AvatarFallback>
+      <Avatar className="h-16 w-16 shrink-0 border-2 border-muted bg-muted/30">
+        <AvatarImage
+          src={lawyer.image_url ?? undefined}
+          className="object-contain p-1.5"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = ""; }}
+        />
+        <AvatarFallback className="text-sm font-semibold bg-primary/10 text-primary">{initials}</AvatarFallback>
       </Avatar>
 
       <div className="flex-1 min-w-0">
