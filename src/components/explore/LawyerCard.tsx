@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MapPin, Star, ShieldCheck, BadgeCheck, Video, Scale, Eye } from "lucide-react";
+import { MapPin, Star, ShieldCheck, BadgeCheck, Video, Scale, Eye, Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,9 +44,17 @@ export function LawyerCard({ lawyer, index = 0 }: LawyerCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="flex items-start gap-4 rounded-xl border bg-card p-4 hover:shadow-lg transition-shadow"
+      className={cn(
+        "relative flex items-start gap-4 rounded-xl border bg-card p-4 hover:shadow-lg transition-shadow",
+        lawyer.featured && "border-yellow-400 shadow-yellow-100 dark:shadow-yellow-900/20 shadow-md"
+      )}
     >
-      <Avatar className="h-16 w-16 shrink-0 border-2 border-muted bg-muted/30">
+      {lawyer.featured && (
+        <div className="absolute top-3 right-3 flex items-center gap-1 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
+          <Sparkles className="h-3 w-3" /> Destacado
+        </div>
+      )}
+      <Avatar className={cn("h-16 w-16 shrink-0 border-2 bg-muted/30", lawyer.featured ? "border-yellow-400" : "border-muted")}>
         <AvatarImage
           src={lawyer.image_url ?? undefined}
           className="object-contain p-1.5"

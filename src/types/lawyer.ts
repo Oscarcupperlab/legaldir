@@ -22,6 +22,8 @@ export interface Lawyer {
   price_range: string | null;
   whatsapp: string | null;
   verified: boolean | null;
+  featured: boolean;
+  featured_until: string | null;
   created_at: string;
 }
 

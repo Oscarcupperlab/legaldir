@@ -54,6 +54,7 @@ export default async function EspecialidadPage({
     .select("*")
     .eq("city", "Madrid")
     .eq("specialty", config.specialty)
+    .order("featured", { ascending: false })
     .order("verified", { ascending: false })
     .order("years_experience", { ascending: false });
 

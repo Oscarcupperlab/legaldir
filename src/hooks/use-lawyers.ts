@@ -10,6 +10,7 @@ export function useLawyers() {
         .from("lawyers")
         .select("*")
         .eq("city", "Madrid")
+        .order("featured", { ascending: false })
         .order("rating", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Lawyer[];

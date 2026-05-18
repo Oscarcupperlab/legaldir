@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Pencil, Trash2, Search, ShieldCheck } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Search, ShieldCheck, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,17 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [togglingFeatured, setTogglingFeatured] = useState<string | null>(null);
+
+  const handleToggleFeatured = async (l: Lawyer) => {
+    setTogglingFeatured(l.id);
+    await supabase
+      .from("lawyers")
+      .update({ featured: !l.featured, featured_until: !l.featured ? null : null })
+      .eq("id", l.id);
+    await load();
+    setTogglingFeatured(null);
+  };
 
   const load = async () => {
     setLoading(true);
@@ -114,6 +125,11 @@ export default function AdminPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-1">
+                      {l.featured && (
+                        <span className="flex items-center gap-1 text-[11px] text-yellow-600 font-medium">
+                          <Sparkles className="h-3 w-3" /> Destacado
+                        </span>
+                      )}
                       {l.verified && (
                         <span className="flex items-center gap-1 text-[11px] text-primary font-medium">
                           <ShieldCheck className="h-3 w-3" /> Verificado
@@ -122,13 +138,23 @@ export default function AdminPage() {
                       {l.free_consultation && (
                         <span className="text-[11px] text-emerald-600">Consulta gratis</span>
                       )}
-                      {!l.verified && !l.free_consultation && (
+                      {!l.featured && !l.verified && !l.free_consultation && (
                         <span className="text-[11px] text-muted-foreground">—</span>
                       )}
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className={`h-8 w-8 p-0 ${l.featured ? "text-yellow-500" : "text-muted-foreground"}`}
+                        onClick={() => handleToggleFeatured(l)}
+                        disabled={togglingFeatured === l.id}
+                        title={l.featured ? "Quitar destacado" : "Marcar como destacado"}
+                      >
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </Button>
                       <Button size="sm" variant="ghost" className="h-8 w-8 p-0" asChild>
                         <Link href={`/admin/editar/${l.id}`}>
                           <Pencil className="h-3.5 w-3.5" />
